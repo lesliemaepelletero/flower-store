@@ -13,21 +13,22 @@ if (!isset($user_id)) {
 
 if (isset($_POST['send'])) {
     // Sanitize and validate user inputs
-    $name = pg_escape_string($conn, trim($_POST['name']));
+    $first_name = pg_escape_string($conn, trim($_POST['first_name']));
+    $last_name = pg_escape_string($conn, trim($_POST['last_name']));
     $email = pg_escape_string($conn, trim($_POST['email']));
-    $number = pg_escape_string($conn, trim($_POST['number']));
+    $number = pg_escape_string($conn, trim($_POST['phone_number']));
     $msg = pg_escape_string($conn, trim($_POST['message']));
 
     // Prepare and execute the query to check if the message already exists
-    $select_message_query = "SELECT * FROM message WHERE name = $1 AND email = $2 AND number = $3 AND message = $4";
-    $result = pg_query_params($conn, $select_message_query, array($name, $email, $number, $msg));
+    $select_message_query = "SELECT * FROM message WHERE first_name = $1 AND last_name = $2 AND email = $3 AND phone_number = $4 AND message = $5";
+    $result = pg_query_params($conn, $select_message_query, array($first_name, $last_name, $email, $number, $msg));
 
-    if (pg_num_rows($result) > 0) {
+    if ($result && pg_num_rows($result) > 0) {
         $message[] = 'Message already sent!';
     } else {
         // Insert the message into the database
-        $insert_message_query = "INSERT INTO message(user_id, name, email, number, message) VALUES($1, $2, $3, $4, $5)";
-        $insert_result = pg_query_params($conn, $insert_message_query, array($user_id, $name, $email, $number, $msg));
+        $insert_message_query = "INSERT INTO message(user_id, first_name, last_name, email, phone_number, message) VALUES($1, $2, $3, $4, $5, $6)";
+        $insert_result = pg_query_params($conn, $insert_message_query, array($user_id, $first_name, $last_name, $email, $number, $msg));
 
         if ($insert_result) {
             $message[] = 'Message sent successfully!';
@@ -67,9 +68,10 @@ if (isset($_POST['send'])) {
     <section class="contact">
         <form action="" method="POST">
             <h3>Send Us a Message!</h3>
-            <input type="text" name="name" placeholder="Enter your name" class="box" required>
+            <input type="text" name="first_name" placeholder="Enter your first name" class="box" required>
+            <input type="text" name="last_name" placeholder="Enter your last name" class="box" required>
             <input type="email" name="email" placeholder="Enter your email" class="box" required>
-            <input type="number" name="number" placeholder="Enter your number" class="box" required>
+            <input type="number" name="phone_number" placeholder="Enter your number" class="box" required>
             <textarea name="message" class="box" placeholder="Enter your message" required cols="30" rows="10"></textarea>
             <input type="submit" value="Send Message" name="send" class="btn">
         </form>
