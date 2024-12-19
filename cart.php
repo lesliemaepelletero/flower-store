@@ -64,25 +64,26 @@ if (isset($_POST['update_quantity'])) {
 
             <?php
             $grand_total = 0;
-            $select_cart = pg_query($conn, "SELECT * FROM cart WHERE user_id = '$user_id'") or die('query failed');
+            // Query the cart_view for the user's cart items, including sub-total calculation
+            $select_cart = pg_query($conn, "SELECT * FROM cart_view WHERE user_id = '$user_id'") or die('query failed');
             if (pg_num_rows($select_cart) > 0) {
                 while ($fetch_cart = pg_fetch_assoc($select_cart)) {
             ?>
                     <div class="box">
-                        <a href="cart.php?delete=<?php echo $fetch_cart['id']; ?>" class="fas fa-times" onclick="return confirm('delete this from cart?');"></a>
+                        <a href="cart.php?delete=<?php echo $fetch_cart['cart_id']; ?>" class="fas fa-times" onclick="return confirm('delete this from cart?');"></a>
                         <a href="view_page.php?pid=<?php echo $fetch_cart['pid']; ?>" class="fas fa-eye"></a>
                         <img src="flowers/<?php echo $fetch_cart['image']; ?>" alt="" class="image">
-                        <div class="name"><?php echo $fetch_cart['name']; ?></div>
+                        <div class="name"><?php echo $fetch_cart['product_name']; ?></div>
                         <div class="price">₱<?php echo $fetch_cart['price']; ?>/-</div>
                         <form action="" method="post">
-                            <input type="hidden" value="<?php echo $fetch_cart['id']; ?>" name="cart_id">
+                            <input type="hidden" value="<?php echo $fetch_cart['cart_id']; ?>" name="cart_id">
                             <input type="number" min="1" value="<?php echo $fetch_cart['quantity']; ?>" name="cart_quantity" class="qty">
                             <input type="submit" value="update" class="option-btn" name="update_quantity">
                         </form>
-                        <div class="sub-total"> sub-total : <span>₱<?php echo $sub_total = ($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</span> </div>
+                        <div class="sub-total"> sub-total : <span>₱<?php echo $fetch_cart['sub_total']; ?>/-</span> </div>
                     </div>
             <?php
-                    $grand_total += $sub_total;
+                    $grand_total += $fetch_cart['sub_total'];
                 }
             } else {
                 echo '<p class="empty">your cart is empty</p>';

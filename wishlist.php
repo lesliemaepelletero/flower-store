@@ -11,25 +11,25 @@ if (!isset($user_id)) {
 }
 
 if (isset($_POST['add_to_cart'])) {
-
     $product_id = $_POST['product_id'];
     $product_name = $_POST['product_name'];
     $product_price = $_POST['product_price'];
     $product_image = $_POST['product_image'];
     $product_quantity = 1;
 
+    // Check if the product is already in the cart
     $check_cart_numbers = pg_query($conn, "SELECT * FROM cart WHERE name = '$product_name' AND user_id = '$user_id'") or die('query failed');
 
     if (pg_num_rows($check_cart_numbers) > 0) {
         $message[] = 'already added to cart';
     } else {
-
+        // Check if product is in wishlist
         $check_wishlist_numbers = pg_query($conn, "SELECT * FROM wishlist WHERE name = '$product_name' AND user_id = '$user_id'") or die('query failed');
-
         if (pg_num_rows($check_wishlist_numbers) > 0) {
             pg_query($conn, "DELETE FROM wishlist WHERE name = '$product_name' AND user_id = '$user_id'") or die('query failed');
         }
 
+        // Add product to cart
         pg_query($conn, "INSERT INTO cart(user_id, pid, name, price, quantity, image) VALUES('$user_id', '$product_id', '$product_name', '$product_price', '$product_quantity', '$product_image')") or die('query failed');
         $message[] = 'product added to cart';
     }
@@ -82,25 +82,29 @@ if (isset($_GET['delete_all'])) {
 
             <?php
             $grand_total = 0;
-            $select_wishlist = pg_query($conn, "SELECT * FROM wishlist WHERE user_id = '$user_id'") or die('query failed');
+
+            // Query the user_wishlist_cart view to get both wishlist and cart data
+            $select_wishlist = pg_query($conn, "SELECT * FROM user_wishlist_cart WHERE user_id = '$user_id'") or die('query failed');
             if (pg_num_rows($select_wishlist) > 0) {
                 while ($fetch_wishlist = pg_fetch_assoc($select_wishlist)) {
+                    // Display products that are in wishlist and not in the cart
+                    if ($fetch_wishlist['source'] == 'wishlist' && !$fetch_wishlist['cart_id']) {
             ?>
-                    <form action="" method="POST" class="box">
-                        <a href="wishlist.php?delete=<?php echo $fetch_wishlist['id']; ?>" class="fas fa-times" onclick="return confirm('delete this from wishlist?');"></a>
-                        <a href="view_page.php?pid=<?php echo $fetch_wishlist['pid']; ?>" class="fas fa-eye"></a>
-                        <img src="flowers/<?php echo $fetch_wishlist['image']; ?>" alt="" class="image">
-                        <div class="name"><?php echo $fetch_wishlist['name']; ?></div>
-                        <div class="price">₱<?php echo $fetch_wishlist['price']; ?>/-</div>
-                        <input type="hidden" name="product_id" value="<?php echo $fetch_wishlist['pid']; ?>">
-                        <input type="hidden" name="product_name" value="<?php echo $fetch_wishlist['name']; ?>">
-                        <input type="hidden" name="product_price" value="<?php echo $fetch_wishlist['price']; ?>">
-                        <input type="hidden" name="product_image" value="<?php echo $fetch_wishlist['image']; ?>">
-                        <input type="submit" value="add to cart" name="add_to_cart" class="btn">
-
-                    </form>
+                        <form action="" method="POST" class="box">
+                            <a href="wishlist.php?delete=<?php echo $fetch_wishlist['wishlist_id']; ?>" class="fas fa-times" onclick="return confirm('delete this from wishlist?');"></a>
+                            <a href="view_page.php?pid=<?php echo $fetch_wishlist['pid']; ?>" class="fas fa-eye"></a>
+                            <img src="flowers/<?php echo $fetch_wishlist['image']; ?>" alt="" class="image">
+                            <div class="name"><?php echo $fetch_wishlist['name']; ?></div>
+                            <div class="price">₱<?php echo $fetch_wishlist['price']; ?>/-</div>
+                            <input type="hidden" name="product_id" value="<?php echo $fetch_wishlist['pid']; ?>">
+                            <input type="hidden" name="product_name" value="<?php echo $fetch_wishlist['name']; ?>">
+                            <input type="hidden" name="product_price" value="<?php echo $fetch_wishlist['price']; ?>">
+                            <input type="hidden" name="product_image" value="<?php echo $fetch_wishlist['image']; ?>">
+                            <input type="submit" value="add to cart" name="add_to_cart" class="btn">
+                        </form>
             <?php
-                    $grand_total += $fetch_wishlist['price'];
+                        $grand_total += $fetch_wishlist['price'];
+                    }
                 }
             } else {
                 echo '<p class="empty">your wishlist is empty</p>';

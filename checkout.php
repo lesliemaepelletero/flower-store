@@ -17,7 +17,18 @@ if (isset($_POST['order'])) {
     $number = pg_escape_string($conn, $_POST['phone_number']);
     $email = pg_escape_string($conn, $_POST['email']);
     $method = pg_escape_string($conn, $_POST['method']);
-    $address = pg_escape_string($conn, 'flat no. ' . $_POST['flat'] . ', ' . $_POST['street'] . ', ' . $_POST['city'] . ', ' . $_POST['country'] . ' - ' . $_POST['pin_code']);
+    
+    // Use isset() to check if postal_code is set and prevent the warning
+    $purok = isset($_POST['purok']) ? pg_escape_string($conn, $_POST['purok']) : '';
+    $barangay = isset($_POST['barangay']) ? pg_escape_string($conn, $_POST['barangay']) : '';
+    $city = isset($_POST['city']) ? pg_escape_string($conn, $_POST['city']) : '';
+    $province = isset($_POST['province']) ? pg_escape_string($conn, $_POST['province']) : '';
+    $country = isset($_POST['country']) ? pg_escape_string($conn, $_POST['country']) : '';
+    $postal_code = isset($_POST['postal_code']) ? pg_escape_string($conn, $_POST['postal_code']) : '';
+    
+    // Construct the address
+    $address = $purok . ', ' . $barangay . ', ' . $city . ', ' . $province . ', ' . $country . ' - ' . $postal_code;
+    
     $placed_on = date('d-M-Y');
 
     $cart_total = 0;
@@ -34,15 +45,20 @@ if (isset($_POST['order'])) {
 
     $total_products = implode(', ', $cart_products);
 
-    $order_query = pg_query($conn, "SELECT * FROM orders WHERE first_name = '$first_name' AND last_name = '$last_name' AND phone_number = '$number' AND email = '$email' AND method = '$method' AND address = '$address' AND total_products = '$total_products' AND total_price = '$cart_total'") or die('query failed');
+    // Ensure the query checks if the order already exists before placing a new one
+    $order_query = pg_query($conn, "SELECT * FROM user_orders WHERE user_id = '$user_id' AND first_name = '$first_name' AND last_name = '$last_name' AND phone_number = '$number' AND email = '$email' AND method = '$method' AND address = '$address' AND total_products = '$total_products' AND total_price = '$cart_total'") or die('query failed');
 
     if ($cart_total == 0) {
         $message[] = 'your cart is empty!';
     } elseif (pg_num_rows($order_query) > 0) {
         $message[] = 'order placed already!';
     } else {
-        pg_query($conn, "INSERT INTO orders(user_id, first_name, last_name, phone_number, email, method, address, total_products, total_price, placed_on) VALUES('$user_id', '$first_name', '$last_name', '$number', '$email', '$method', '$address', '$total_products', '$cart_total', '$placed_on')") or die('query failed');
+        // Insert the new order into the user_orders table
+        pg_query($conn, "INSERT INTO user_orders(user_id, first_name, last_name, phone_number, email, method, address, total_products, total_price, placed_on, payment_status) VALUES('$user_id', '$first_name', '$last_name', '$number', '$email', '$method', '$address', '$total_products', '$cart_total', '$placed_on', 'pending')") or die('query failed');
+        
+        // Remove items from cart after placing order
         pg_query($conn, "DELETE FROM cart WHERE user_id = '$user_id'") or die('query failed');
+        
         $message[] = 'order placed successfully!';
     }
 }
@@ -111,7 +127,7 @@ if (isset($_POST['order'])) {
                 </div>
                 <div class="inputBox">
                     <span>Your Number:</span>
-                    <input type="number" name="number" min="0" placeholder="Enter your number" required>
+                    <input type="number" name="phone_number" min="0" placeholder="Enter your number" required>
                 </div>
                 <div class="inputBox">
                     <span>Your Email:</span>
@@ -127,28 +143,28 @@ if (isset($_POST['order'])) {
                     </select>
                 </div>
                 <div class="inputBox">
-                    <span>Address Line 01:</span>
-                    <input type="text" name="flat" placeholder="e.g. Flat No." required>
+                    <span>Purok/House No:</span>
+                    <input type="text" name="purok" placeholder="Enter purok or house number" required>
                 </div>
                 <div class="inputBox">
-                    <span>Address Line 02:</span>
-                    <input type="text" name="street" placeholder="e.g. Street Name" required>
+                    <span>Barangay:</span>
+                    <input type="text" name="barangay" placeholder="Enter barangay" required>
                 </div>
                 <div class="inputBox">
                     <span>City:</span>
-                    <input type="text" name="city" placeholder="e.g. Butuan" required>
+                    <input type="text" name="city" placeholder="Enter city" required>
                 </div>
                 <div class="inputBox">
                     <span>Province:</span>
-                    <input type="text" name="state" placeholder="e.g. Agusan Del Norte" required>
+                    <input type="text" name="province" placeholder="Enter province" required>
                 </div>
                 <div class="inputBox">
                     <span>Country:</span>
-                    <input type="text" name="country" placeholder="e.g. Philippines" required>
+                    <input type="text" name="country" placeholder="Enter country" required>
                 </div>
                 <div class="inputBox">
-                    <span>Pin Code:</span>
-                    <input type="number" min="0" name="pin_code" placeholder="e.g. 8600" required>
+                    <span>Postal Code:</span>
+                    <input type="text" name="postal_code" placeholder="Enter postal code" required>
                 </div>
             </div>
 

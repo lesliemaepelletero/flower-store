@@ -45,7 +45,8 @@ if (!isset($user_id)) {
         <div class="box-container">
 
             <?php
-            $select_orders = pg_query($conn, "SELECT * FROM orders WHERE user_id = '$user_id'");
+            // Use the view for fetching orders
+            $select_orders = pg_query($conn, "SELECT * FROM user_orders WHERE user_id = '$user_id' ORDER BY placed_on DESC");
 
             if (pg_num_rows($select_orders) > 0) {
                 while ($fetch_orders = pg_fetch_assoc($select_orders)) {
@@ -83,3 +84,4 @@ if (!isset($user_id)) {
 </body>
 
 </html>
+            
