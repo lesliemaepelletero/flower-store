@@ -18,26 +18,23 @@ if (isset($_POST['add_to_wishlist'])) {
     $product_price = $_POST['product_price'];
     $product_image = $_POST['product_image'];
 
-    // Using prepared statements to prevent SQL injection
-    $stmt = $conn->prepare("SELECT * FROM `wishlist` WHERE name = ? AND user_id = ?");
-    $stmt->bind_param("si", $product_name, $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // Prevent SQL injection using pg_escape_string
+    $product_name = pg_escape_string($conn, $product_name);
 
-    // Checking if the product is already in wishlist or cart
-    $check_cart_numbers = $conn->prepare("SELECT * FROM `cart` WHERE name = ? AND user_id = ?");
-    $check_cart_numbers->bind_param("si", $product_name, $user_id);
-    $check_cart_numbers->execute();
-    $cart_result = $check_cart_numbers->get_result();
+    // Check if the product is already in wishlist or cart
+    $check_wishlist_query = "SELECT * FROM wishlist WHERE name = '$product_name' AND user_id = '$user_id'";
+    $check_cart_query = "SELECT * FROM cart WHERE name = '$product_name' AND user_id = '$user_id'";
 
-    if ($result->num_rows > 0) {
+    $result = pg_query($conn, $check_wishlist_query);
+    $cart_result = pg_query($conn, $check_cart_query);
+
+    if (pg_num_rows($result) > 0) {
         $message[] = 'already added to wishlist';
-    } elseif ($cart_result->num_rows > 0) {
+    } elseif (pg_num_rows($cart_result) > 0) {
         $message[] = 'already added to cart';
     } else {
-        $stmt_insert = $conn->prepare("INSERT INTO `wishlist` (user_id, pid, name, price, image) VALUES (?, ?, ?, ?, ?)");
-        $stmt_insert->bind_param("iisss", $user_id, $product_id, $product_name, $product_price, $product_image);
-        $stmt_insert->execute();
+        $insert_query = "INSERT INTO wishlist (user_id, pid, name, price, image) VALUES ('$user_id', '$product_id', '$product_name', '$product_price', '$product_image')";
+        pg_query($conn, $insert_query);
         $message[] = 'product added to wishlist';
     }
 }
@@ -50,30 +47,30 @@ if (isset($_POST['add_to_cart'])) {
     $product_image = $_POST['product_image'];
     $product_quantity = $_POST['product_quantity'];
 
-    // Using prepared statements to prevent SQL injection
-    $stmt_check_cart = $conn->prepare("SELECT * FROM `cart` WHERE name = ? AND user_id = ?");
-    $stmt_check_cart->bind_param("si", $product_name, $user_id);
-    $stmt_check_cart->execute();
-    $cart_result = $stmt_check_cart->get_result();
+    // Prevent SQL injection using pg_escape_string
+    $product_name = pg_escape_string($conn, $product_name);
 
-    if ($cart_result->num_rows > 0) {
+    // Check if the product is already in the cart
+    $check_cart_query = "SELECT * FROM cart WHERE name = '$product_name' AND user_id = '$user_id'";
+    $check_wishlist_query = "SELECT * FROM wishlist WHERE name = '$product_name' AND user_id = '$user_id'";
+
+    $cart_result = pg_query($conn, $check_cart_query);
+
+    if (pg_num_rows($cart_result) > 0) {
         $message[] = 'already added to cart';
     } else {
 
-        $stmt_check_wishlist = $conn->prepare("SELECT * FROM `wishlist` WHERE name = ? AND user_id = ?");
-        $stmt_check_wishlist->bind_param("si", $product_name, $user_id);
-        $stmt_check_wishlist->execute();
-        $wishlist_result = $stmt_check_wishlist->get_result();
+        $wishlist_result = pg_query($conn, $check_wishlist_query);
 
-        if ($wishlist_result->num_rows > 0) {
-            $stmt_delete = $conn->prepare("DELETE FROM `wishlist` WHERE name = ? AND user_id = ?");
-            $stmt_delete->bind_param("si", $product_name, $user_id);
-            $stmt_delete->execute();
+        if (pg_num_rows($wishlist_result) > 0) {
+            // Remove from wishlist if exists
+            $delete_query = "DELETE FROM wishlist WHERE name = '$product_name' AND user_id = '$user_id'";
+            pg_query($conn, $delete_query);
         }
 
-        $stmt_insert_cart = $conn->prepare("INSERT INTO `cart` (user_id, pid, name, price, quantity, image) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt_insert_cart->bind_param("iissis", $user_id, $product_id, $product_name, $product_price, $product_quantity, $product_image);
-        $stmt_insert_cart->execute();
+        // Add to cart
+        $insert_cart_query = "INSERT INTO cart (user_id, pid, name, price, quantity, image) VALUES ('$user_id', '$product_id', '$product_name', '$product_price', '$product_quantity', '$product_image')";
+        pg_query($conn, $insert_cart_query);
         $message[] = 'product added to cart';
     }
 }
@@ -108,12 +105,12 @@ if (isset($_POST['add_to_cart'])) {
         <?php
         if (isset($_GET['pid'])) {
             $pid = $_GET['pid'];
-            $query = "SELECT * FROM products WHERE id = $1";
-            $result = pg_prepare($conn, "get_product", $query);
-            $result = pg_execute($conn, "get_product", array($pid));
-
-            if ($result && pg_num_rows($result) > 0) {
-                while ($fetch_products = pg_fetch_assoc($result)) {
+            $stmt = $conn->prepare("SELECT * FROM `products` WHERE id = ?");
+            $stmt->bind_param("i", $pid);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                while ($fetch_products = $result->fetch_assoc()) {
         ?>
                     <form action="" method="POST">
                         <img src="uploaded_img/<?php echo $fetch_products['image']; ?>" alt="" class="image">
