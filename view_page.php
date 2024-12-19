@@ -105,12 +105,13 @@ if (isset($_POST['add_to_cart'])) {
         <?php
         if (isset($_GET['pid'])) {
             $pid = $_GET['pid'];
-            $stmt = $conn->prepare("SELECT * FROM `products` WHERE id = ?");
-            $stmt->bind_param("i", $pid);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows > 0) {
-                while ($fetch_products = $result->fetch_assoc()) {
+
+            // Query the product details using pg_query
+            $product_query = "SELECT * FROM products WHERE id = '$pid'";
+            $product_result = pg_query($conn, $product_query);
+
+            if (pg_num_rows($product_result) > 0) {
+                while ($fetch_products = pg_fetch_assoc($product_result)) {
         ?>
                     <form action="" method="POST">
                         <img src="uploaded_img/<?php echo $fetch_products['image']; ?>" alt="" class="image">
