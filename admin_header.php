@@ -1,9 +1,9 @@
 <?php
-if(isset($message)){
-   foreach($message as $message){
+if (isset($message)) {
+   foreach ($message as $message) {
       echo '
       <div class="message">
-         <span>'.$message.'</span>
+         <span>' . $message . '</span>
          <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
       </div>
       ';
@@ -19,6 +19,7 @@ if(isset($message)){
 
       <nav class="navbar">
          <a href="admin_page.php">home</a>
+         <a href="activity_logs.php">activity logs</a>
          <a href="admin_products.php">products</a>
          <a href="admin_orders.php">orders</a>
          <a href="admin_users.php">users</a>
