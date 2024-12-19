@@ -45,32 +45,26 @@ if (!isset($user_id)) {
         <div class="box-container">
 
             <?php
-            // Use the view for fetching orders
-            $select_orders = pg_query($conn, "SELECT * FROM user_orders WHERE user_id = '$user_id' ORDER BY placed_on DESC");
+            // Query the user_orders view filtered by the logged-in user's user_id
+            $select_orders = pg_query($conn, "SELECT * FROM user_orders WHERE user_id = '$user_id'");
 
             if (pg_num_rows($select_orders) > 0) {
                 while ($fetch_orders = pg_fetch_assoc($select_orders)) {
             ?>
                     <div class="box">
-                        <p> placed on : <span><?php echo $fetch_orders['placed_on']; ?></span> </p>
-                        <p> firstname : <span><?php echo $fetch_orders['first_name']; ?></span> </p>
-                        <p> lastname : <span><?php echo $fetch_orders['last_name']; ?></span> </p>
-                        <p> number : <span><?php echo $fetch_orders['phone_number']; ?></span> </p>
-                        <p> email : <span><?php echo $fetch_orders['email']; ?></span> </p>
-                        <p> address : <span><?php echo $fetch_orders['address']; ?></span> </p>
-                        <p> payment method : <span><?php echo $fetch_orders['method']; ?></span> </p>
-                        <p> your orders : <span><?php echo $fetch_orders['total_products']; ?></span> </p>
-                        <p> total price : <span> ₱<?php echo $fetch_orders['total_price']; ?>/-</span> </p>
-                        <p> payment status : <span style="color:<?php if ($fetch_orders['payment_status'] == 'pending') {
-                                                                    echo 'tomato';
-                                                                } else {
-                                                                    echo 'green';
-                                                                } ?>"><?php echo $fetch_orders['payment_status']; ?></span> </p>
+                        <p> Order ID: <span><?php echo $fetch_orders['order_id']; ?></span> </p>
+                        <p> Placed on: <span><?php echo $fetch_orders['placed_on']; ?></span> </p>
+                        <p> Name: <span><?php echo $fetch_orders['user_name']; ?></span> </p>
+                        <p> Email: <span><?php echo $fetch_orders['user_email']; ?></span> </p>
+                        <p> Total price: <span> ₱<?php echo $fetch_orders['total_price']; ?>/-</span> </p>
+                        <p> Payment status: <span style="color:<?php echo $fetch_orders['payment_status'] == 'pending' ? 'tomato' : 'green'; ?>">
+                            <?php echo $fetch_orders['payment_status']; ?>
+                        </span> </p>
                     </div>
             <?php
                 }
             } else {
-                echo '<p class="empty">no orders placed yet!</p>';
+                echo '<p class="empty">No orders placed yet!</p>';
             }
             ?>
         </div>
@@ -84,4 +78,3 @@ if (!isset($user_id)) {
 </body>
 
 </html>
-            
