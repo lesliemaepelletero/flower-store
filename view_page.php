@@ -108,17 +108,17 @@ if (isset($_POST['add_to_cart'])) {
         <?php
         if (isset($_GET['pid'])) {
             $pid = $_GET['pid'];
-            $stmt = $conn->prepare("SELECT * FROM `products` WHERE id = ?");
-            $stmt->bind_param("i", $pid);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows > 0) {
-                while ($fetch_products = $result->fetch_assoc()) {
+            $query = "SELECT * FROM products WHERE id = $1";
+            $result = pg_prepare($conn, "get_product", $query);
+            $result = pg_execute($conn, "get_product", array($pid));
+
+            if ($result && pg_num_rows($result) > 0) {
+                while ($fetch_products = pg_fetch_assoc($result)) {
         ?>
                     <form action="" method="POST">
                         <img src="uploaded_img/<?php echo $fetch_products['image']; ?>" alt="" class="image">
                         <div class="name"><?php echo $fetch_products['name']; ?></div>
-                        <div class="price">$<?php echo $fetch_products['price']; ?>/-</div>
+                        <div class="price">₱<?php echo $fetch_products['price']; ?>/-</div>
                         <div class="details"><?php echo $fetch_products['details']; ?></div>
                         <input type="number" name="product_quantity" value="1" min="1" class="qty">
                         <input type="hidden" name="product_id" value="<?php echo $fetch_products['id']; ?>">

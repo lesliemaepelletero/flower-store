@@ -47,7 +47,7 @@ if (!isset($admin_id)) {
                $total_pendings += $fetch_pendings['total_price'];
             };
             ?>
-            <h3>$<?php echo $total_pendings; ?>/-</h3>
+            <h3>₱<?php echo $total_pendings; ?>/-</h3>
             <p>total pendings</p>
          </div>
 
@@ -59,7 +59,7 @@ if (!isset($admin_id)) {
                $total_completes += $fetch_completes['total_price'];
             };
             ?>
-            <h3>$<?php echo $total_completes; ?>/-</h3>
+            <h3>₱<?php echo $total_completes; ?>/-</h3>
             <p>completed payments</p>
          </div>
 

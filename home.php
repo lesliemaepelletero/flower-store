@@ -86,7 +86,7 @@ if (isset($_POST['add_to_cart'])) {
    <section class="home">
 
       <div class="content">
-         <h3>welcome to Petal Perfection!</h3>
+         <h3>welcome to Blooming Blossoms!</h3>
          <p>The beauty of flowers is forever captured in the way floral designers make them a part of our life's memories!</p>
          <a href="about.php" class="btn">discover more</a>
       </div>
