@@ -111,7 +111,7 @@ if (isset($_POST['order'])) {
                 </div>
                 <div class="inputBox">
                     <span>Your Number:</span>
-                    <input type="number" name="number" min="0" placeholder="Enter your number" required>
+                    <input type="number" name="phone_number" min="0" placeholder="Enter your number" required>
                 </div>
                 <div class="inputBox">
                     <span>Your Email:</span>

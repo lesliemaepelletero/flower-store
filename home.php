@@ -76,6 +76,167 @@ if (isset($_POST['add_to_cart'])) {
 
    <!-- custom admin css file link  -->
    <link rel="stylesheet" href="css/style.css">
+   <style>
+      /* General Styling */
+      body {
+         font-family: 'Poppins', sans-serif;
+         margin: 0;
+         padding: 0;
+         background: #f9f5f0;
+         /* Light floral background */
+         color: #444;
+      }
+
+      a {
+         text-decoration: none;
+      }
+
+      h1,
+      h3 {
+         color: #333;
+         text-align: center;
+      }
+
+
+
+      /* Home Section */
+      .home {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         background: url('images/bg-home.png') no-repeat center/cover;
+         height: 70vh;
+         color: white;
+         text-align: center;
+      }
+
+      .home .content h3 {
+         font-size: 2.5rem;
+         text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      .home .content p {
+         margin: 1rem 0;
+         font-size: 1.2rem;
+      }
+
+      .home .content .btn {
+         background: #ff79a1;
+         color: white;
+         padding: 0.8rem 1.5rem;
+         border-radius: 25px;
+         transition: background 0.3s;
+      }
+
+      .home .content .btn:hover {
+         background: #ff5a87;
+      }
+
+      /* Products Section */
+      .products {
+         padding: 4rem 2rem;
+         background: linear-gradient(135deg, #fff6f0, #ffd1e0);
+      }
+
+      .products .title {
+         font-size: 2rem;
+         margin-bottom: 2rem;
+         text-transform: uppercase;
+         color: #ff79a1;
+      }
+
+      /* Product Box */
+      .box {
+         background: white;
+         border-radius: 12px;
+         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+         padding: 1.5rem;
+         overflow: hidden;
+         transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .box:hover {
+         transform: translateY(-10px);
+         box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+      }
+
+      .box .image {
+         width: 80%;
+         height: auto;
+         margin: 0 auto;
+         display: block;
+         border-radius: 10px;
+         margin-bottom: 1rem;
+      }
+
+      .box .name {
+         font-size: 1.2rem;
+         font-weight: 600;
+         margin: 0.5rem 0;
+         text-align: center;
+         color: #555;
+      }
+
+      .box .price {
+         font-size: 1rem;
+         font-weight: bold;
+         color: #ff5a87;
+         text-align: center;
+      }
+
+      /* Buttons */
+      .option-btn,
+      .btn {
+         display: block;
+         width: 100%;
+         text-align: center;
+         margin: 0.5rem 0;
+         padding: 0.8rem;
+         font-size: 1rem;
+         border: none;
+         border-radius: 25px;
+         cursor: pointer;
+         transition: background 0.3s, color 0.3s;
+      }
+
+      .option-btn {
+         background: #ffe4f3;
+         color: #ff79a1;
+      }
+
+      .option-btn:hover {
+         background: #ff79a1;
+         color: white;
+      }
+
+      .btn {
+         background: #ff79a1;
+         color: white;
+      }
+
+      .btn:hover {
+         background: #ff5a87;
+      }
+
+      /* Home Contact */
+      .home-contact {
+         padding: 4rem 2rem;
+         background: #fff3f8;
+         text-align: center;
+      }
+
+      .home-contact .content h3 {
+         font-size: 2rem;
+         margin-bottom: 1rem;
+         color: #ff79a1;
+      }
+
+      .home-contact .content p {
+         margin-bottom: 1.5rem;
+         font-size: 1.1rem;
+         color: #666;
+      }
+   </style>
 
 </head>
 
@@ -99,35 +260,35 @@ if (isset($_POST['add_to_cart'])) {
 
       <div class="box-container">
 
-      <?php
-$select_products = pg_query($conn, "SELECT * FROM available_products");
+         <?php
+         $select_products = pg_query($conn, "SELECT * FROM available_products");
 
-if (pg_num_rows($select_products) > 0) {
-    while ($fetch_products = pg_fetch_assoc($select_products)) {
-        // Get the full image path
-        $image_path = 'uploaded_img/' . $fetch_products['product_image']; // Corrected to use product_image
+         if (pg_num_rows($select_products) > 0) {
+            while ($fetch_products = pg_fetch_assoc($select_products)) {
+               // Get the full image path
+               $image_path = 'uploaded_img/' . $fetch_products['product_image']; // Corrected to use product_image
 
-        // Render the product details
-        ?>
-        <form action="" method="POST" class="box">
-            <a href="view_page.php?pid=<?php echo $fetch_products['product_id']; ?>" class="fas fa-eye"></a>
-            <div class="price">₱<?php echo $fetch_products['product_price']; ?>/-</div>
-            <img src="<?php echo $image_path; ?>" alt="Product Image" class="image">
-            <div class="name"><?php echo $fetch_products['product_name']; ?></div>
-            <input type="number" name="product_quantity" value="1" min="1" class="qty">
-            <input type="hidden" name="product_id" value="<?php echo $fetch_products['product_id']; ?>">
-            <input type="hidden" name="product_name" value="<?php echo $fetch_products['product_name']; ?>">
-            <input type="hidden" name="product_price" value="<?php echo $fetch_products['product_price']; ?>">
-            <input type="hidden" name="product_image" value="<?php echo $fetch_products['product_image']; ?>">
-            <input type="submit" value="add to wishlist" name="add_to_wishlist" class="option-btn">
-            <input type="submit" value="add to cart" name="add_to_cart" class="btn">
-        </form>
-        <?php
-    }
-} else {
-    echo '<p class="empty">no products added yet!</p>';
-}
-?>
+               // Render the product details
+         ?>
+               <form action="" method="POST" class="box">
+                  <a href="view_page.php?pid=<?php echo $fetch_products['product_id']; ?>" class="fas fa-eye"></a>
+                  <div class="price">₱<?php echo $fetch_products['product_price']; ?>/-</div>
+                  <img src="<?php echo $image_path; ?>" alt="Product Image" class="image">
+                  <div class="name"><?php echo $fetch_products['product_name']; ?></div>
+                  <input type="number" name="product_quantity" value="1" min="1" class="qty">
+                  <input type="hidden" name="product_id" value="<?php echo $fetch_products['product_id']; ?>">
+                  <input type="hidden" name="product_name" value="<?php echo $fetch_products['product_name']; ?>">
+                  <input type="hidden" name="product_price" value="<?php echo $fetch_products['product_price']; ?>">
+                  <input type="hidden" name="product_image" value="<?php echo $fetch_products['product_image']; ?>">
+                  <input type="submit" value="add to wishlist" name="add_to_wishlist" class="option-btn">
+                  <input type="submit" value="add to cart" name="add_to_cart" class="btn">
+               </form>
+         <?php
+            }
+         } else {
+            echo '<p class="empty">no products added yet!</p>';
+         }
+         ?>
 
       </div>
 

@@ -53,6 +53,111 @@ if (isset($_POST['send'])) {
 
     <!-- Custom admin CSS file link -->
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #fdf0f5;
+            /* Soft pink background */
+            color: #444;
+        }
+
+        a {
+            text-decoration: none;
+            color: #ff79a1;
+        }
+
+        a:hover {
+            color: #ff5a87;
+        }
+
+
+
+        /* Heading Section */
+        .heading {
+            background: linear-gradient(135deg, #ffd1e0, #fff6f0);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .heading h3 {
+            font-size: 4rem;
+            color: black;
+        }
+
+        .heading p a {
+            font-weight: bold;
+        }
+
+        /* Contact Section */
+        .contact {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 1rem;
+            background: #fff3f8;
+        }
+
+        .contact form {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .contact form h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #ff5a87;
+        }
+
+        .contact form .box {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.8rem 0;
+            border: 1px solid #ffccd5;
+            border-radius: 25px;
+            background: #fff6f0;
+            color: #555;
+            font-size: 1rem;
+        }
+
+        .contact form .box:focus {
+            outline: none;
+            border-color: #ff79a1;
+            background: #ffe4f3;
+        }
+
+        .contact form textarea {
+            resize: none;
+        }
+
+        .contact form .btn {
+            background: #ff79a1;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .contact form .btn:hover {
+            background: #ff5a87;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .contact form {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 
 </head>
 

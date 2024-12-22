@@ -14,7 +14,7 @@ if (isset($message)) {
 
 <header class="header">
     <div class="flex">
-        <a href="home.php" class="logo">Blooming Blossoms</a>
+        <a href="home.php" class="logo">🌸 Blooming Blossoms</a>
         <nav class="navbar">
             <ul>
                 <li><a href="home.php">home</a></li>
@@ -56,3 +56,123 @@ if (isset($message)) {
         </div>
     </div>
 </header>
+
+<style>
+    /* General Header Styling */
+    .header {
+        background: #fff3f8;
+        /* Light pink background */
+
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .header .flex {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .header .logo {
+        font-family: 'Dancing Script', cursive;
+        font-size: 2rem;
+        color: #ff79a1;
+        text-decoration: none;
+    }
+
+    .header .navbar ul {
+        display: flex;
+        gap: 1.5rem;
+        list-style: none;
+    }
+
+    .header .navbar ul li {
+        position: relative;
+    }
+
+    .header .navbar ul li a {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #444;
+        text-transform: capitalize;
+        transition: color 0.3s ease;
+    }
+
+    .header .navbar ul li a:hover {
+        color: #ff79a1;
+    }
+
+    .header .navbar ul li ul {
+        display: none;
+        position: absolute;
+        background: #ffe4f3;
+        border-radius: 8px;
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        padding: 0.5rem 0;
+        margin-top: 0.5rem;
+        list-style: none;
+        z-index: 10;
+    }
+
+    .header .navbar ul li:hover ul {
+        display: block;
+    }
+
+    .header .navbar ul li ul li a {
+        padding: 0.5rem 1rem;
+        display: block;
+        color: #444;
+    }
+
+    .header .icons {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .header .icons a {
+        font-size: 1.2rem;
+        color: #444;
+        position: relative;
+        transition: color 0.3s ease;
+    }
+
+    .header .icons a:hover {
+        color: #ff79a1;
+    }
+
+    .header .icons a span {
+        position: absolute;
+        top: -8px;
+        right: -12px;
+        background: #ff79a1;
+        color: white;
+        font-size: 0.8rem;
+        border-radius: 50%;
+        padding: 0.1rem 0.4rem;
+    }
+
+    .header .account-box {
+        background: #ffffff;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        position: absolute;
+        top: 100%;
+        right: 2rem;
+        display: none;
+        z-index: 20;
+    }
+
+
+    .header .account-box .delete-btn {
+        background: #ff79a1;
+        color: white;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        text-transform: capitalize;
+    }
+</style>
