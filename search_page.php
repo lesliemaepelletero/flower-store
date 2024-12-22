@@ -98,6 +98,7 @@ if (isset($_POST['add_to_cart'])) {
             <?php
             if (isset($_POST['search_btn'])) {
                 $search_box = pg_escape_string($conn, $_POST['search_box']);
+                // Search using the indexed 'name' column
                 $select_products = pg_query($conn, "SELECT * FROM products WHERE name LIKE '%{$search_box}%'") or die('query failed');
                 if (pg_num_rows($select_products) > 0) {
                     while ($fetch_products = pg_fetch_assoc($select_products)) {
