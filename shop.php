@@ -227,7 +227,7 @@ if (isset($_POST['add_to_cart'])) {
             text-align: center;
             margin: 0.5rem 0;
             padding: 0.8rem;
-            font-size: 1rem;
+            font-size: 1.6rem;
             border: none;
             border-radius: 25px;
             cursor: pointer;

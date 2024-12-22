@@ -111,13 +111,13 @@ if (isset($_POST['add_to_cart'])) {
       }
 
       .home .content h3 {
-         font-size: 2.5rem;
+         font-size: 6rem;
          text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
       }
 
       .home .content p {
-         margin: 1rem 0;
-         font-size: 1.2rem;
+         margin: 2rem 0;
+         font-size: 1.9rem;
       }
 
       .home .content .btn {
@@ -192,7 +192,7 @@ if (isset($_POST['add_to_cart'])) {
          text-align: center;
          margin: 0.5rem 0;
          padding: 0.8rem;
-         font-size: 1rem;
+         font-size: 1.6rem;
          border: none;
          border-radius: 25px;
          cursor: pointer;
@@ -247,7 +247,7 @@ if (isset($_POST['add_to_cart'])) {
    <section class="home">
 
       <div class="content">
-         <h3>welcome to Blooming Blossoms!</h3>
+         <h3>Welcome to Blooming Blossoms!</h3>
          <p>The beauty of flowers is forever captured in the way floral designers make them a part of our life's memories!</p>
          <a href="about.php" class="btn">discover more</a>
       </div>
@@ -302,7 +302,7 @@ if (isset($_POST['add_to_cart'])) {
 
       <div class="content">
          <h3>have any questions?</h3>
-         <p>Just click below.</p>
+         <p >Just click below.</p>
          <a href="contact.php" class="btn">contact us</a>
       </div>
 

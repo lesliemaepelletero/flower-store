@@ -94,7 +94,7 @@ if ($row = pg_fetch_assoc($result)) {
         }
 
         .shopping-cart .title {
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin-bottom: 2rem;
             text-transform: uppercase;
             color: #ff79a1;
@@ -135,7 +135,7 @@ if ($row = pg_fetch_assoc($result)) {
             text-align: center;
             margin: 0.5rem 0;
             padding: 0.8rem;
-            font-size: 1rem;
+            font-size: 1.6rem;
             border: none;
             border-radius: 25px;
             cursor: pointer;

@@ -111,7 +111,7 @@ if (isset($_POST['send'])) {
         }
 
         .contact form h3 {
-            font-size: 1.8rem;
+            font-size: 2.6rem;
             margin-bottom: 1rem;
             color: #ff5a87;
         }
@@ -124,7 +124,7 @@ if (isset($_POST['send'])) {
             border-radius: 25px;
             background: #fff6f0;
             color: #555;
-            font-size: 1rem;
+            font-size: 1.5rem;
         }
 
         .contact form .box:focus {
