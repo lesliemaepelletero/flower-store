@@ -71,6 +71,97 @@ if ($row = pg_fetch_assoc($result)) {
 
     <!-- Custom admin CSS file link -->
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .heading {
+            background: linear-gradient(135deg, #ffd1e0, #fff6f0);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .heading h3 {
+            font-size: 4rem;
+            color: black;
+        }
+
+        .heading p {
+            font-weight: bold;
+            color: black;
+        }
+
+        .shopping-cart {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #fff6f0, #ffd1e0);
+        }
+
+        .shopping-cart .title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            color: #ff79a1;
+        }
+
+        .box-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+
+        .box .name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0.5rem 0;
+            text-align: center;
+            color: #555;
+        }
+
+        .box .price,
+        .sub-total,
+        .cart-total {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #ff5a87;
+            text-align: center;
+        }
+
+        /* Buttons */
+        .option-btn,
+        .btn,
+        .more-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin: 0.5rem 0;
+            padding: 0.8rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .option-btn,
+        .more-btn {
+            background: #ffe4f3;
+            color: #ff79a1;
+        }
+
+        .option-btn:hover {
+            background: #ff79a1;
+            color: white;
+        }
+
+        .btn {
+            background: #ff79a1;
+            color: white;
+        }
+
+        .btn:hover {
+            background: #ff5a87;
+        }
+    </style>
 </head>
 
 <body>

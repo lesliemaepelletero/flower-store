@@ -57,6 +57,48 @@ if (isset($_POST['submit'])) {
     <title>Register</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .form-container {
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px;
+            background: url('images/bggg.png') no-repeat center/cover;
+        }
+
+        form {
+            width: 400px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            /* Adjusted height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* Centers content vertically */
+            align-items: center;
+            /* Centers content horizontally */
+            background: linear-gradient(135deg, #ffd1e0, #fff6f0);
+        }
+
+        .box {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #7e2a53;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #ba71a2;
+        }
+    </style>
 </head>
 
 <body>
@@ -102,12 +144,6 @@ if (isset($_POST['submit'])) {
                 <option value="">Select Barangay</option>
             </select>
 
-            <!-- User type selection (Admin or Regular User) -->
-            <select name="user_type" class="box" required>
-                <option value="">Select Account Type</option>
-                <option value="user">Regular User</option>
-                <option value="admin">Admin</option>
-            </select>
 
             <!-- Checkbox for Terms and Conditions -->
             <label for="terms" style="display: block; margin-top: 10px;">

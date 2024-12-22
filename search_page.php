@@ -72,6 +72,39 @@ if (isset($_POST['add_to_cart'])) {
 
     <!-- custom admin css file link  -->
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .heading {
+            background: linear-gradient(135deg, #ffd1e0, #fff6f0);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .heading h3 {
+            font-size: 4rem;
+            color: black;
+        }
+
+        .heading p {
+            font-weight: bold;
+            color: black;
+        }
+
+        .box .name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0.5rem 0;
+            text-align: center;
+            color: #555;
+        }
+
+        .box .price,
+        .sub-total {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #ff5a87;
+            text-align: center;
+        }
+    </style>
 
 </head>
 

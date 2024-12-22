@@ -26,6 +26,23 @@ if (!isset($user_id)) {
 
     <!-- custom admin css file link  -->
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .heading {
+            background: linear-gradient(135deg, #ffd1e0, #fff6f0);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .heading h3 {
+            font-size: 4rem;
+            color: black;
+        }
+
+        .heading p {
+            font-weight: bold;
+            color: black;
+        }
+    </style>
 
 </head>
 
@@ -58,8 +75,8 @@ if (!isset($user_id)) {
                         <p> Email: <span><?php echo $fetch_orders['user_email']; ?></span> </p>
                         <p> Total price: <span> ₱<?php echo $fetch_orders['total_price']; ?>/-</span> </p>
                         <p> Payment status: <span style="color:<?php echo $fetch_orders['payment_status'] == 'pending' ? 'tomato' : 'green'; ?>">
-                            <?php echo $fetch_orders['payment_status']; ?>
-                        </span> </p>
+                                <?php echo $fetch_orders['payment_status']; ?>
+                            </span> </p>
                     </div>
             <?php
                 }
